@@ -1,0 +1,27 @@
+void blobJoin(int n) {
+    /* joins two consecutive blobs
+       realloc memory for current->data
+       append current->data with data of the next blob
+       change ptrs of current->next, current->next->next->prev
+       and destroy (n+1)th blob */
+
+    if (n >= total_blobs) return;
+
+    struct blob* current = &list;
+    while (n > 1) {
+        current = current->next_blob;
+        n--;
+    }
+
+    size_t new_len = strlen(current->data) + strlen(current->next_blob->data);
+    current->data = realloc(current->data, new_len + 1);
+
+    strcat(current->data, current->next_blob->data);
+    free(current->next_blob->data);
+
+    current->next_blob = current->next_blob->next_blob;
+    free(current->next_blob->prev_blob); // ?!
+    current->next_blob->prev_blob = current;
+
+    total_blobs--;
+}

@@ -1,0 +1,36 @@
+void blobSplit(int at, int n) {
+    /* "list" is blob for n == 1 */
+
+    at = at <= 0 ? 1 : at;
+    n = n > total_blobs ? total_blobs : n;
+
+    struct blob* new;
+    struct blob* current = &list;
+    while (n > 1) {
+        current = current->next_blob;
+        n--;
+    }
+
+    size_t orig_len = strlen(current->data);
+    at = at >= orig_len ? orig_len - 1 : at;
+    if (at <= 0) return;
+
+    new = malloc(sizeof(list));
+    new->next_blob = current->next_blob;
+    if (current->next_blob->prev_blob != NULL)
+        current->next_blob->prev_blob = new;
+
+    char* after = &current->data[at]; // buffer
+    size_t len = strlen(after);
+
+    new->data = malloc(len + 1);
+    strcpy(new->data, after);
+    new->data[len] = '\0';
+
+    current->data = realloc(current->data, orig_len - len + 1);
+    current->data[orig_len - len] = '\0';
+    
+    new->prev_blob = current;
+    current->next_blob = new;
+    total_blobs++;
+}
