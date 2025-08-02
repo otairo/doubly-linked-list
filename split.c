@@ -1,3 +1,5 @@
+#include "text_processor.c"
+
 void blobSplit(int at, int n) {
     /* "list" is blob for n == 1 */
 

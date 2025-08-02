@@ -1,3 +1,5 @@
+#include "text_processor.c"
+
 void blobJoin(int n) {
     /* joins two consecutive blobs
        realloc memory for current->data
